@@ -204,10 +204,14 @@ The following lines are all valid.
 ::
 
     SECRET_KEY="123"
+    SPACEINCLUDED = "test"
     USERNAME=john
     DATABASE_URL='postgresql://user:password@localhost/production?sslmode=require'
     FEATURES={'DotEnv': True}
     # comment and blank lines are also supported
+    # comment containing an =
+    KEY = value # with ignored trailing comment
+    
 
     export ENV="production"
     export env="staging"
