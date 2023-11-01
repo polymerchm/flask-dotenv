@@ -38,11 +38,17 @@ class DotEnv(object):
         """Actual importing function."""
         with open(env_file, "r") as f:  # pylint: disable=invalid-name
             for line in f:
+
                 try:
                     line = line.lstrip()
                     if line.startswith('export'):
                         line = line.replace('export', '', 1)
+                    if line.startswith("#"):
+                        continue
                     key, val = line.strip().split('=', 1)
+                    key = key.strip()
+                    if "#" in val:
+                        val = val.split('#')[0].strip() # handle trailing comments
                 except ValueError:  # Take care of blank or comment lines
                     pass
                 else:
@@ -51,11 +57,11 @@ class DotEnv(object):
                             if key in self.app.config:
                                 print(
                                     " * Overwriting an existing config var:"
-                                    " {0}".format(key))
+                                    " {0} => {1}".format(key, val))
                             else:
                                 print(
                                     " * Setting an entirely new config var:"
-                                    " {0}".format(key))
+                                    " {0} => {1}".format(key, val))
                         self.app.config[key] = re.sub(
                             r"\A[\"']|[\"']\Z", "", val)
 
