@@ -31,7 +31,12 @@ def dequote(s):
     """
     if (len(s) >= 2 and s[0] == s[-1]) and s.startswith(("'", '"')):
         return s[1:-1]
-    return s
+    elif (len(s) >= 2 and s.startswith(("'", '"'))):
+          return s[1:]
+    elif  (len(s) >= 2 and s.startswith(("'", '"'))):
+           return s[:-1]
+    else:
+        return s
 
 
 class DotEnv(object):
