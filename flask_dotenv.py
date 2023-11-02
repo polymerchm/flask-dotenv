@@ -11,6 +11,17 @@ import os
 import re
 import warnings
 
+def string_or_numeric(value):
+    try:
+        int_value = int(value)
+        return int_value
+    except:
+        try: 
+            float_value = float(value)
+            return float_value
+        except:
+            return value
+
 
 class DotEnv(object):
     """The .env file support for Flask."""
@@ -62,8 +73,9 @@ class DotEnv(object):
                                 print(
                                     " * Setting an entirely new config var:"
                                     " {0} => {1}".format(key, val))
-                        self.app.config[key] = re.sub(
+                        string_val = re.sub(
                             r"\A[\"']|[\"']\Z", "", val)
+                        self.app.config[key] = string_or_numeric(string_val)
 
     def eval(self, keys):
         """
