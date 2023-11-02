@@ -21,6 +21,17 @@ def string_or_numeric(value):
             return float_value
         except:
             return value
+        
+def dequote(s):
+    """
+    If a string has single or double quotes around it, remove them.
+    Make sure the pair of quotes match.
+    If a matching pair of quotes is not found,
+    or there are less than 2 characters, return the string unchanged.
+    """
+    if (len(s) >= 2 and s[0] == s[-1]) and s.startswith(("'", '"')):
+        return s[1:-1]
+    return s
 
 
 class DotEnv(object):
@@ -73,8 +84,7 @@ class DotEnv(object):
                                 print(
                                     " * Setting an entirely new config var:"
                                     " {0} => {1}".format(key, val))
-                        string_val = re.sub(
-                            r"\A[\"']|[\"']\Z", "", val)
+                        string_val = dequote(val)
                         self.app.config[key] = string_or_numeric(string_val)
 
     def eval(self, keys):
